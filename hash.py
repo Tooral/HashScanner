@@ -1,9 +1,11 @@
+# Tural Hagverdiyev HashLookup Code with API addresses from related Company
 import hashlib
 import sys
 import argparse
 import requests
 
 
+# defined function for parsing arguments
 def parse_arguments():
     parser = argparse.ArgumentParser()
 
@@ -42,7 +44,7 @@ def parse_arguments():
     validate(args)
     return args
 
-
+# function to validate
 def validate(args):
     workflow_values = ['mcl', 'metadefender',
                        'rest', 'sanitize', 'disabled', 'unarchive']
@@ -50,7 +52,7 @@ def validate(args):
         print("Invalid workflow variable given, allowed values: mcl-metadefender-rest-sanitize-disabled-unarchive")
         sys.exit(0)
 
-
+# function for calculation the hash file
 def calculate_hash_file(filename, hash_type):
     try:
         if hash_type == "md5":
@@ -67,7 +69,7 @@ def calculate_hash_file(filename, hash_type):
         sys.exit(0)
     return hash.hexdigest()
 
-
+#retrieving the scan files
 def retrieve_scan_file(url, api_key):
     headers = {'apikey': api_key}
     try:
@@ -90,7 +92,7 @@ def retrieve_scan_file(url, api_key):
         sys.exit(0)
     return output_data
 
-
+#uploading file to metadefender system with help of the function
 def upload_file_to_metadefender(api_key, file):
     base_url = "https://api.metadefender.com/v4/file"
     headers = {'apikey': api_key, 'content-type': "application/octet-stream"}
@@ -155,7 +157,7 @@ def show_results(results):
             scanresult=j['scan_result_i']))
         print("def_time: {time}".format(time=j['def_time']))
 
-
+#also some error handlings
 if __name__ == '__main__':
     args = parse_arguments()
     hashed_file_code = calculate_hash_file(args.file, args.hash)
